@@ -1,3 +1,6 @@
+USE AdventureWorks2019;					--Make sure to select the database before writing SQL queries
+GO
+
 1.	SELECT 
 		ProductID, 
 		Name, 
@@ -121,4 +124,5 @@
 		Color				--Groups rows by each unique color
 	ORDER BY
 		Color DESC;			--Sort the color in descending order
+
 	
