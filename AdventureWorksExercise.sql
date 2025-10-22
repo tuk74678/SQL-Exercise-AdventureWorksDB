@@ -1,7 +1,7 @@
 USE AdventureWorks2019;					--Make sure to select the database before writing SQL queries
 GO
 
-1.	SELECT 
+	SELECT 
 		ProductID, 
 		Name, 
 		Color, 
@@ -9,7 +9,7 @@ GO
 	FROM 
 		Production.Product;
 
-2.	SELECT 
+	SELECT 
 		ProductID, 
 		Name, 
 		Color, 
@@ -19,7 +19,7 @@ GO
 	WHERE 
 		NOT ListPrice = 0;
 
-3. SELECT 
+	SELECT 
 		ProductID, 
 		Name, 
 		Color, 
@@ -29,7 +29,7 @@ GO
 	WHERE 
 		Color IS NULL;
 		
-4.	SELECT
+	SELECT
 		ProductID,
 		Name,
 		Color,
@@ -39,7 +39,7 @@ GO
 	WHERE
 		Color IS NOT NULL;
 
-5.	SELECT
+	SELECT
 		ProductID,
 		Name,
 		Color,
@@ -51,14 +51,14 @@ GO
 	  AND					--Using AND Operator when both conditions are met
 		ListPrice > 0;		--ListPrice has to be greater than 0
 
-6.	SELECT 
+	SELECT 
 		Name + ' ' + Color  --Concatenate name and color
 	FROM 
 		Production.Product
 	WHERE
 		Color IS NOT NULL;	--Exclude rows with null color
 		
-7. SELECT 
+    SELECT 
 		'Name: ' + Name + ' -- Color: ' + Color		--Concatenate the text with column values
 	  AS ProductInfo			-- I added Alias AS for clarity
 	FROM 
@@ -66,7 +66,7 @@ GO
 	WHERE 
 		Color IS NOT NULL;
 	
-8.	SELECT
+    SELECT
 		ProductID,
 		Name
 	FROM 
@@ -74,7 +74,7 @@ GO
 	WHERE 
 		ProductID BETWEEN 400 AND 500;		--Using BETWEEN and AND to specify range
 
-9.	SELECT 
+	SELECT 
 		ProductID,
 		Name
 	FROM 
@@ -82,13 +82,13 @@ GO
 	WHERE 
 		Color IN ('Black', 'Blue');		--Using IN to filter rows 
 
-10.	SELECT * 
+	SELECT * 
 	FROM 
 		Production.Product
 	WHERE 
 		Name LIKE 'S%';			--Using LIKE to filter row where Name starts with S
 		
-11.	SELECT
+	SELECT
 		ProductID,
 		Name,
 		ListPrice
@@ -97,7 +97,7 @@ GO
 	ORDER BY 
 		Name ASC;				--Name is sorted alphabetically or ascending by default
 
-12.	SELECT 
+	SELECT 
 		Name,
 		ListPrice
 	FROM
@@ -107,7 +107,7 @@ GO
 	ORDER BY 
 		Name ASC;				--Sort the Name in ascending
 
-13.	SELECT 
+	SELECT 
 		Name
 	FROM 
 		Production.Product
@@ -116,7 +116,7 @@ GO
 	ORDER BY
 		Name;
 
-14. SELECT 
+	SELECT 
 		Color
 	FROM 
 		Production.Product
@@ -126,3 +126,4 @@ GO
 		Color DESC;			--Sort the color in descending order
 
 	
+
