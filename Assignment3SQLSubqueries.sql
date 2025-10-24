@@ -86,3 +86,49 @@ GROUP BY  t.ProductName, co.City, co.CityQty
 ORDER BY t.ProductName
 
 --9
+--a Use sub-query
+SELECT DISTINCT e.City
+FROM Employees e
+WHERE e.City NOT IN (
+    SELECT DISTINCT c.City
+    FROM Customers c
+    JOIN Orders o ON c.CustomerID = o.CustomerID
+)
+
+--b Do not use sub-query
+SELECT DISTINCT e.City
+FROM Employees e
+LEFT JOIN Customers c ON e.City = c.City
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.OrderID IS NULL
+
+--10
+WITH EmployeeCityOrdersCTE AS (
+    SELECT e.City, COUNT(o.OrderID) AS TotalOrders
+    FROM Employees e
+    JOIN Orders o ON e.EmployeeID = o.EmployeeID
+    GROUP BY e.City
+),
+CustomerCityQuantities AS (
+    SELECT c.City, SUM(od.Quantity) AS TotalQuantity
+    FROM Customers c
+    JOIN Orders o ON c.CustomerID = o.CustomerID
+    JOIN [Order Details] od ON o.OrderID = od.OrderID
+    GROUP BY c.City
+),
+TopEmployeeCity AS (
+    SELECT TOP 1 City FROM EmployeeCityOrdersCTE ORDER BY TotalOrders DESC
+),
+TopCustomerCity AS (
+    SELECT TOP 1 City FROM CustomerCityQuantities ORDER BY TotalQuantity DESC
+)
+SELECT ec.City
+FROM TopEmployeeCity ec
+JOIN TopCustomerCity cc ON ec.City = cc.City;
+
+--11
+/*There are several way to remove duplicate record of a table:
+  First way is to use CTE and ROW_NUMBER()
+  Second way is to use DISTINCT to recreate clean data
+  and another way to use Selft-Join to join the table itself in order to identify and delele duplicates
+*/
