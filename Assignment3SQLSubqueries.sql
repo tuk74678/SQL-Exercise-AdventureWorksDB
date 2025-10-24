@@ -38,4 +38,3 @@ GROUP BY City
 HAVING COUNT(CustomerID) >= 2                           --filter only get the city with at least 2 or more customers
 ORDER BY CustCount DESC
 
---6
