@@ -38,3 +38,51 @@ GROUP BY City
 HAVING COUNT(CustomerID) >= 2                           --filter only get the city with at least 2 or more customers
 ORDER BY CustCount DESC
 
+--6
+SELECT c.City, COUNT(od.ProductID) AS TotalProdOrdered
+FROM Customers c JOIN Orders o ON c.CustomerID = o.CustomerID
+                 JOIN [Order Details] od ON o.OrderID = od.OrderID
+GROUP BY c.City
+HAVING COUNT(od.ProductID) >= 2
+ORDER BY TotalProdOrdered DESC
+
+--7
+SELECT DISTINCT c.CompanyName, c.ContactName, c.City AS CustomerCity, o.ShipCity
+FROM Customers c JOIN Orders o ON c.CustomerID = o.CustomerID 
+WHERE o.ShipCity <> c.City
+ORDER BY c.ContactName
+
+--8
+WITH ProductOrderedCTE 
+    AS (
+        SELECT p.ProductID, p.ProductName, AVG(od.UnitPrice) AS AvgPrice, SUM(od.Quantity) TotalQtyOrdered
+        FROM Products p JOIN [Order Details] od ON p.ProductID = od.ProductID
+        GROUP BY p.ProductID, p.ProductName
+        ),
+
+     Top5CTE
+    AS (
+        SELECT TOP 5 ProductID, ProductName, TotalQtyOrdered
+        FROM ProductOrderedCTE 
+        ORDER BY TotalQtyOrdered DESC
+    ),
+
+     CityOrdered
+    AS (
+        SELECT od.ProductID, c.city, SUM(od.Quantity) AS CityQty
+        FROM Customers c JOIN Orders o ON c.CustomerID = o.CustomerID
+                        JOIN [Order Details] od ON o.OrderID = od.OrderID
+        GROUP BY od.ProductID, c.City
+    )
+
+SELECT t.ProductName, AVG(od.UnitPrice) AS AvgPrice,
+       co.City AS TopCity, co.CityQty
+FROM Top5CTE t JOIN [Order Details] od ON t.ProductID = od.ProductID
+               JOIN CityOrdered co ON od.ProductID = co.ProductID
+WHERE co.CityQty = (SELECT MAX(CityQty)
+                        FROM CityOrdered c2
+                        WHERE c2.ProductID = t.ProductID)
+GROUP BY  t.ProductName, co.City, co.CityQty  
+ORDER BY t.ProductName
+
+--9
